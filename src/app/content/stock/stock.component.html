@@ -1,0 +1,55 @@
+<h3 text-center>Produits en Stock</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-7">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let produit of produits">
+                        <td> {{produit.name}} </td>
+                        <td> {{produit.quantite}} </td>
+                        <td>{{produit.prix}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    Ajouter Produit
+                </div>
+                <div class="card-body ">
+                    <form [formGroup]="produitForm">
+                        <div class="from-group">
+                            <label>Nom</label>
+                            <input type="text" class="form-control" formControlName= "name">
+                        </div>
+                        <br>
+                        <div class="alert alert-danger" *ngIf ="produitForm.controls['name'].invalid && produitForm.controls['name'].touched || produitForm.controls['name'].dirty" >
+                            Le Nom est obligatoire
+                        </div>
+                        <div class="from-group">
+                            <label>Prix Unitaire </label>
+                            <input type="number" class="form-control" formControlName= "prixUnitaire">
+                        </div>
+                        <div class="from-group">
+                            <label>Quantité</label>
+                            <input type="number" class="form-control" formControlName= "quantite">
+                        </div>               
+                        <br>    
+                        <button class="btn btn-success" [disabled]= "produitForm.pristine || produitForm.invalid" >Ajouter</button>   
+                    </form>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-info" routerLink = "/produit">produit</button>

@@ -1,0 +1,15 @@
+<div class="container text-center">
+    <a *ngFor = 'let produit of produits'>
+        <div class="prod-unit">
+            <div class="card">
+                <div class="card-body">
+                    <h4>{{produit.name}}</h4>
+                    <p>{{produit.prix | number}}</p>
+                    <p>F CFA</p>
+                    <p>{{produit.description}}</p>
+                </div>
+              </div>
+        </div>
+    </a>
+</div>
+<button type="button" class="btn btn-info" routerLink = "/stock">Stock</button>
