@@ -1,7 +1,9 @@
+import { AuthGuardService } from './core/service/auth/auth-guard.service';
+import { AuthService } from './core/service/auth/auth.service';
 import { AcceuilComponent } from './content/acceuil/acceuil.component';
 import { RegisterComponent } from './content/auth/register/register.component';
 import { LoginComponent } from './content/auth/login/login.component';
-import { AfficheProdService } from './service/AfficheProd.service';
+import { AfficheProdService } from './core/service/AfficheProd.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -24,6 +26,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
+import { ParametreComponent } from './content/parametre/parametre.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +38,8 @@ import { MatInputModule } from '@angular/material/input';
     DashboardComponent,
     RegisterComponent,
     LoginComponent,
-    AcceuilComponent
+    AcceuilComponent,
+    ParametreComponent
     
   ],
   imports: [
@@ -59,7 +63,7 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     
   ],
-  providers: [AfficheProdService ],
+  providers: [AfficheProdService, AuthService, AuthGuardService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,6 +6,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 
 export class NavbarComponent implements OnInit {
+  opened = true;
+  panelOpenState = false;
   ngOnInit(): void {
   }
   

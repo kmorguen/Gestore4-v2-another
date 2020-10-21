@@ -1,3 +1,63 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button>
+        <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+      </button>
+      <h1 style="padding-left: 10px;">Gestore4</h1>
+      <span class="menu-spacer"></span>
+      
+      <div class="droite">
+        <button mat-icon-button>
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <button  mat-stroked-button routerLink = "/login"> Deconnecter </button>
+      </div>
+    </mat-toolbar-row>
+  
+  </mat-toolbar>
+  
+  
+  <mat-sidenav-container>
+      <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+          <mat-nav-list class="taille">
+  
+              <button class="icone1" mat-icon-button>
+                  <mat-icon class="icone">account_circle</mat-icon>
+              </button>
+           
+              <mat-panel-title>
+                  <a mat-list-item routerLink="/acceuil">
+                      <mat-icon>home</mat-icon> Accueil </a>
+              </mat-panel-title>
+  
+              <mat-panel-title>
+                <a mat-list-item routerLink="/dashboard">
+                    <mat-icon>bar_chart</mat-icon> Dashboard </a>
+              </mat-panel-title>
+  
+              <mat-panel-title>
+                <a mat-list-item routerLink="/produit">
+                    <mat-icon>shopping_cart</mat-icon> Produit </a>
+              </mat-panel-title>
+  
+              <mat-panel-title>
+                <a mat-list-item routerLink="/stock">
+                    <mat-icon>store</mat-icon> Stock </a>
+              </mat-panel-title>
+
+              <mat-panel-title>
+                <a mat-list-item routerLink="/stock">
+                    <mat-icon>build</mat-icon> Parametre </a>
+              </mat-panel-title>
+
+              <mat-panel-title>
+                <a mat-list-item routerLink="/login">
+                    <mat-icon>power_settings_new</mat-icon> Deconnexion </a>
+              </mat-panel-title>
+          </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+       
 <h3 text-center>Produits en Stock</h3>
 <div class="container">
     <div class="row">
@@ -15,6 +75,8 @@
                         <td> {{produit.name}} </td>
                         <td> {{produit.quantite}} </td>
                         <td>{{produit.prix}}</td>
+                        <td><a (click)="onEdit()"class="btn-info btn">edit</a></td>
+                        <td><a (click)="onDelete()" class="btn-danger btn">delete</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -53,3 +115,8 @@
 </div>
 
 <button type="button" class="btn btn-info" routerLink = "/produit">produit</button>
+
+<nav class="navbar fixed-bottom navbar-light bg-light"></nav>
+      </mat-sidenav-content>
+  </mat-sidenav-container>
+  <nav class="navbar fixed-bottom navbar-light bg-light"></nav>

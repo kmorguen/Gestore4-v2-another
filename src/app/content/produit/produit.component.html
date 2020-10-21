@@ -1,15 +1,78 @@
-<div class="container text-center">
-    <a *ngFor = 'let produit of produits'>
-        <div class="prod-unit">
-            <div class="card">
-                <div class="card-body">
-                    <h4>{{produit.name}}</h4>
-                    <p>{{produit.prix | number}}</p>
-                    <p>F CFA</p>
-                    <p>{{produit.description}}</p>
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button>
+        <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+      </button>
+      <h1 style="padding-left: 10px;">Gestore4</h1>
+      <span class="menu-spacer"></span>
+      
+      <div class="droite">
+        <button mat-icon-button>
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <button  mat-stroked-button routerLink = "/login"> Deconnecter </button>
+      </div>
+    </mat-toolbar-row>
+  
+  </mat-toolbar>
+  
+  
+  <mat-sidenav-container>
+      <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+          <mat-nav-list class="taille">
+  
+              <button class="icone1" mat-icon-button>
+                  <mat-icon class="icone">account_circle</mat-icon>
+              </button>
+           
+              <mat-panel-title>
+                  <a mat-list-item routerLink="/acceuil">
+                      <mat-icon>home</mat-icon> Accueil </a>
+              </mat-panel-title>
+  
+              <mat-panel-title>
+                <a mat-list-item routerLink="/dashboard">
+                    <mat-icon>bar_chart</mat-icon> Dashboard </a>
+              </mat-panel-title>
+  
+              <mat-panel-title>
+                <a mat-list-item routerLink="/produit">
+                    <mat-icon>shopping_cart</mat-icon> Produit </a>
+              </mat-panel-title>
+  
+              <mat-panel-title>
+                <a mat-list-item routerLink="/stock">
+                    <mat-icon>store</mat-icon> Stock </a>
+              </mat-panel-title>
+
+              <mat-panel-title>
+                <a mat-list-item routerLink="/stock">
+                    <mat-icon>build</mat-icon> Parametre </a>
+              </mat-panel-title>
+
+              <mat-panel-title>
+                <a mat-list-item routerLink="/login">
+                    <mat-icon>power_settings_new</mat-icon> Deconnexion </a>
+              </mat-panel-title>
+          </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+       
+        <div class="container text-center">
+            <a *ngFor = 'let produit of produits'>
+                <div class="prod-unit">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>{{produit.name}}</h4>
+                            <p>{{produit.prix | number}}</p>
+                            <p>F CFA</p>
+                            <p>{{produit.description}}</p>
+                        </div>
+                      </div>
                 </div>
-              </div>
+            </a>
         </div>
-    </a>
-</div>
-<button type="button" class="btn btn-info" routerLink = "/stock">Stock</button>
+        <button type="button" class="btn btn-info" routerLink = "/stock">Stock</button>
+<nav class="navbar fixed-bottom navbar-light bg-light"></nav>
+      </mat-sidenav-content>
+  </mat-sidenav-container>

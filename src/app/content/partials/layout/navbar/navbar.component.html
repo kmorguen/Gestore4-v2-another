@@ -1,31 +1,78 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <nav>
-      <div class="logo">
-Brand</div>
-<input type="checkbox" id="click">
-      <label for="click" class="menu-btn">
-        <i class="fas fa-bars"></i>
-      </label>
-      <ul>
-<li><a class="active" href="#">Home</a></li>
-<li><a href="#">About</a></li>
-<li><a href="#">Services</a></li>
-<li><a href="#">Gallery</a></li>
-<li><a href="#">Feedback</a></li>
-</ul>
-</nav>
-    <div class="content">
-      <div>
-Responsive Navigation Menu Bar Design</div>
-<div>
-using only HTML & CSS</div>
-</div>
-</body>
-</html>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <h1 style="padding-left: 10px;">Gestore4</h1>
+    <span class="menu-spacer"></span>
+    
+    <div class="droite">
+      <button mat-icon-button>
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <button  mat-stroked-button routerLink = "login"> Deconnecter </button>
+    </div>
+  </mat-toolbar-row>
+
+</mat-toolbar>
+
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+        <mat-nav-list class="taille">
+
+            <button class="icone1" mat-icon-button>
+                <mat-icon class="icone">person_outline</mat-icon>
+            </button>
+         
+            <mat-panel-title>
+                <a mat-list-item routerLink="acceuil">
+                    <mat-icon>home</mat-icon> Accueil </a>
+            </mat-panel-title>
+
+            <mat-panel-title>
+              <a mat-list-item routerLink="dashboard">
+                  <mat-icon>home</mat-icon> Dashboard </a>
+            </mat-panel-title>
+
+            <mat-panel-title>
+              <a mat-list-item routerLink="produit">
+                  <mat-icon>home</mat-icon> Produit </a>
+            </mat-panel-title>
+
+            <mat-panel-title>
+              <a mat-list-item routerLink="stock">
+                  <mat-icon>home</mat-icon> Stock </a>
+            </mat-panel-title>
+
+            <mat-expansion-panel hideToggle (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                <a mat-list-item routerLink="contacts">
+                    <mat-icon>build</mat-icon> Parametres </a>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <a mat-list-item routerLink="contacts">
+                <mat-icon>fiber_manual_record</mat-icon> Linge </a>
+            </mat-expansion-panel>
+       
+
+            <mat-expansion-panel hideToggle (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                <a mat-list-item routerLink="create-contact">
+                    <mat-icon>admin_panel_settings</mat-icon> Profil </a>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink="contacts">
+                <mat-icon>fiber_manual_record</mat-icon> Permission </a>
+            </mat-expansion-panel>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+     
+    </mat-sidenav-content>
+</mat-sidenav-container>
