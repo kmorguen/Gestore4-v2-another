@@ -18,6 +18,8 @@ interface LoginResult {
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
+  LogAccessUrl = ''
+  RegisterAccessUrl = ''
   private readonly apiUrl = `${environment.apiUrl}api/account`;
   private timer: Subscription;
   private _user = new BehaviorSubject<ApplicationUser>(null);
@@ -67,6 +69,16 @@ export class AuthService implements OnDestroy {
       );
   }
 
+//   login(email:string, password:string) {
+//     return this.http.post<{access_token:  string}>( this.LogAccessUrl, {email, password}).pipe(tap(res => {
+//     localStorage.setItem('access_token', res.access_token);
+// }))
+// }
+// register(email:string, password:string) {
+//   return this.http.post<{access_token: string}>( this.RegisterAccessUrl, {email, password}).pipe(tap(res => {
+//   this.login(email, password)
+// }))
+// }
   logout() {
     this.http
       .post<unknown>(`${this.apiUrl}/logout`, {})
@@ -79,6 +91,15 @@ export class AuthService implements OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  // logout() {
+  //   localStorage.removeItem('access_token');
+  //   this.router.navigate(['login'])
+  // }
+
+  public get loggedIn(): boolean{
+    return localStorage.getItem('access_token') !==  null;
   }
 
   refreshToken() {
