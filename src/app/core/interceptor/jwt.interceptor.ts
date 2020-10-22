@@ -1,31 +1,26 @@
+import { HTTP_INTERCEPTORS, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-} from '@angular/common/http';
+import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
+
+import { TokenStorageService } from '../service/auth/token-storage.service';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { AuthService } from '../service/auth/auth.service';
+
+const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
-export class JwtInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private token: TokenStorageService) { }
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
-    // add JWT auth header if a user is logged in for API requests
-    const accessToken = localStorage.getItem('access_token');
-    const isApiUrl = request.url.startsWith(environment.apiUrl);
-    if (accessToken && isApiUrl) {
-      request = request.clone({
-        setHeaders: { Authorization: `Bearer ${accessToken}` },
-      });
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let authReq = req;
+    const token = this.token.getToken();
+    if (token != null) {
+      authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token) });
     }
-
-    return next.handle(request);
+    return next.handle(authReq);
   }
 }
+
+export const authInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+];

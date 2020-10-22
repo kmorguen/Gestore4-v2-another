@@ -1,163 +1,37 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { map, tap, delay, finalize } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { ApplicationUser } from '../../models/application-user';
-import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
-interface LoginResult {
-  username: string;
-  role: string;
-  originalUserName: string;
-  accessToken: string;
-  refreshToken: string;
-}
+const AUTH_API = 'http://localhost:8080/api/auth/';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class AuthService implements OnDestroy {
-  LogAccessUrl = ''
-  RegisterAccessUrl = ''
-  private readonly apiUrl = `${environment.apiUrl}api/account`;
-  private timer: Subscription;
+export class AuthService {
+
   private _user = new BehaviorSubject<ApplicationUser>(null);
   user$: Observable<ApplicationUser> = this._user.asObservable();
 
-  private storageEventListener(event: StorageEvent) {
-    if (event.storageArea === localStorage) {
-      if (event.key === 'logout-event') {
-        this.stopTokenTimer();
-        this._user.next(null);
-      }
-      if (event.key === 'login-event') {
-        this.stopTokenTimer();
-        this.http.get<LoginResult>(`${this.apiUrl}/user`).subscribe((x) => {
-          this._user.next({
-            username: x.username,
-            role: x.role,
-            originalUserName: x.originalUserName,
-          });
-        });
-      }
-    }
+  constructor(private http: HttpClient) { }
+
+  login(credentials): Observable<any> {
+    return this.http.post(AUTH_API + 'signin', {
+      username: credentials.username,
+      password: credentials.password
+    }, httpOptions);
   }
 
-  constructor(private router: Router, private http: HttpClient) {
-    window.addEventListener('storage', this.storageEventListener.bind(this));
-  }
-
-  ngOnDestroy(): void {
-    window.removeEventListener('storage', this.storageEventListener.bind(this));
-  }
-
-  login(username: string, password: string) {
-    return this.http
-      .post<LoginResult>(`${this.apiUrl}/login`, { username, password })
-      .pipe(
-        map((x) => {
-          this._user.next({
-            username: x.username,
-            role: x.role,
-            originalUserName: x.originalUserName,
-          });
-          this.setLocalStorage(x);
-          this.startTokenTimer();
-          return x;
-        })
-      );
-  }
-
-//   login(email:string, password:string) {
-//     return this.http.post<{access_token:  string}>( this.LogAccessUrl, {email, password}).pipe(tap(res => {
-//     localStorage.setItem('access_token', res.access_token);
-// }))
-// }
-// register(email:string, password:string) {
-//   return this.http.post<{access_token: string}>( this.RegisterAccessUrl, {email, password}).pipe(tap(res => {
-//   this.login(email, password)
-// }))
-// }
-  logout() {
-    this.http
-      .post<unknown>(`${this.apiUrl}/logout`, {})
-      .pipe(
-        finalize(() => {
-          this.clearLocalStorage();
-          this._user.next(null);
-          this.stopTokenTimer();
-          this.router.navigate(['login']);
-        })
-      )
-      .subscribe();
-  }
-
-  // logout() {
-  //   localStorage.removeItem('access_token');
-  //   this.router.navigate(['login'])
-  // }
-
-  public get loggedIn(): boolean{
-    return localStorage.getItem('access_token') !==  null;
-  }
-
-  refreshToken() {
-    const refreshToken = localStorage.getItem('refresh_token');
-    if (!refreshToken) {
-      this.clearLocalStorage();
-      return of(null);
-    }
-
-    return this.http
-      .post<LoginResult>(`${this.apiUrl}/refresh-token`, { refreshToken })
-      .pipe(
-        map((x) => {
-          this._user.next({
-            username: x.username,
-            role: x.role,
-            originalUserName: x.originalUserName,
-          });
-          this.setLocalStorage(x);
-          this.startTokenTimer();
-          return x;
-        })
-      );
-  }
-
-  setLocalStorage(x: LoginResult) {
-    localStorage.setItem('access_token', x.accessToken);
-    localStorage.setItem('refresh_token', x.refreshToken);
-    localStorage.setItem('login-event', 'login' + Math.random());
-  }
-
-  clearLocalStorage() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.setItem('logout-event', 'logout' + Math.random());
-  }
-
-  private getTokenRemainingTime() {
-    const accessToken = localStorage.getItem('access_token');
-    if (!accessToken) {
-      return 0;
-    }
-    const jwtToken = JSON.parse(atob(accessToken.split('.')[1]));
-    const expires = new Date(jwtToken.exp * 1000);
-    return expires.getTime() - Date.now();
-  }
-
-  private startTokenTimer() {
-    const timeout = this.getTokenRemainingTime();
-    this.timer = of(true)
-      .pipe(
-        delay(timeout),
-        tap(() => this.refreshToken().subscribe())
-      )
-      .subscribe();
-  }
-
-  private stopTokenTimer() {
-    this.timer?.unsubscribe();
+  register(user): Observable<any> {
+    return this.http.post(AUTH_API + 'signup', {
+      username: user.username,
+      email: user.email,
+      password: user.password
+    }, httpOptions);
   }
 }

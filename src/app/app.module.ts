@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { ParametreComponent } from './content/parametre/parametre.component';
+import { ProfilComponent } from './content/parametre/profil/profil.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,8 @@ import { ParametreComponent } from './content/parametre/parametre.component';
     RegisterComponent,
     LoginComponent,
     AcceuilComponent,
-    ParametreComponent
+    ParametreComponent,
+    ProfilComponent
     
   ],
   imports: [
