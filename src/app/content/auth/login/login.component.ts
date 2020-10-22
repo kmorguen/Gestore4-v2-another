@@ -1,12 +1,13 @@
+import { TokenStorageService } from './../../../core/service/auth/token-storage.service';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../core/service/auth/auth.service';
-import { TokenStorageService } from '../../../core/service/auth/token-storage.service';
+import { AuthService } from 'src/app/core/service/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit {
 
   form: any = {};
@@ -45,5 +46,4 @@ export class LoginComponent implements OnInit {
   reloadPage(): void {
     window.location.reload();
   }
-
 }
